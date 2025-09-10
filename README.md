@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 
-# Database configuration
+// Database configuration
 if PRODUCTION:
     # Production: gunakan PostgreSQL dengan kredensial dari environment variables
     DATABASES = {
@@ -31,7 +31,7 @@ if PRODUCTION:
         }
     }
 else:
-    # Development: gunakan SQLite
+    // Development: gunakan SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -66,6 +66,9 @@ urlpatterns = [
 ]
 Sehingga ketika ada permintaan masuk ke URL utama aplikasi, permintaan tersebut dapat diarahkan dengan benar ke fungsi show_main.
 
+Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
+
+<img width="963" height="525" alt="Screenshot 2025-09-10 at 09 59 19" src="https://github.com/user-attachments/assets/59afaa92-d64f-4918-bcd2-bab18f16d1ff" />
 
 
 Jelaskan peran settings.py dalam proyek Django!
