@@ -1,22 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <h1>{{ app_name }}</h1>
+ {% extends 'base.html' %}
+ {% block content %}
+<h1>Football Shop</h1>
 
-    <h2>Welcome</h2>
+<h5>NPM: </h5>
+<p>{{ npm }}</p>
 
-    <h2>Deskripsi </h2>
-        <h3>{{nama}}</h3>
-        <p> {{ kelas }}</p>
-        <!-- <p> {{ thumbnail }}</p> -->
+<h5>Name:</h5>
+<p>{{ name }}</p>
 
-        <h3>{{nama}}</h3>
-        <p> {{ kelas }}</p>
-        <!-- <p> {{ thumbnail }}</p> -->
+<h5>Class:</h5>
+<p>{{ class }}</p>
 
-</body>
-</html>
+<a href="{% url 'main:add' %}">
+  <button>+ Add Product</button>
+</a>
+
+<hr>
+
+{% if not product_list %}
+<p>Belum ada product pada football shop.</p>
+{% else %}
+
+{% for product in product_list %}
+<div>
+  <h2><a href="{% url 'main:detail' product.id %}">{{ product.name }}</a></h2>
+
+  <p>{% if product.is_featured %}<b>Featured</b>{% endif %}</p>
+
+  {% if product.thumbnail %}
+  <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
+  <br />
+  {% endif %}
+
+  <p>{{ product.description|truncatewords:25 }}...</p>
+
+  <p><a href="{% url 'main:detail' product.id %}"><button>Read More</button></a></p>
+</div>
+
+<hr>
+{% endfor %}
+
+{% endif %}
+ {% endblock content %}
