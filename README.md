@@ -114,7 +114,20 @@ Kita membutuhkan {% csrf_token %} saat membuat form di Django sebagai fitur keam
 Tanpa csrf_token, sebuah aplikasi menjadi rentan karena hanya mengandalkan cookie sesi untuk otentikasi, padahal browser akan secara otomatis melampirkan cookie tersebut ke setiap permintaan ke domain terkait, tidak peduli apakah permintaan itu berasal dari situs asli atau dari situs berbahaya. Hal ini dapat dimanfaatkan oleh penyerang dengan cara menipu user yang sedang login untuk mengunjungi situs mereka sendiri, di mana sebuah form tersembunyi secara otomatis mengirimkan permintaan palsu untuk menipu user lewat platform kita.
 
 Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-Pertama-tama, saya membuat folder templates pada direktori football_shop yang berisi base.html sebagai template dasar dari halaman web yang nanti akan saya buat. Lalu saya tambahkan 
+Pertama-tama, saya membuat 6 fungsi baru, add, detail, show_json, show_xml, show_json_by_id, show_xml_by_id dalam views.py dan menambahkan URL masing masing fungsi tersebut ke dalam urls.py. Setelah itu, saya membuat file baru forms.py agar dapat menerima data baru yang nanti akan diinput user.
+
+Setelah itu, saya lanjut dengan membuild add.html dan detail.html pada direktori main/templates yang berguna untuk menambahkan produk dan juga detail dari produk. Saya juga merubah isi dari main.html untuk menampilkan tombol yang dapat mengakses fungsi add dan detail yang telah saya buat pada views.py yang mengarahkan user ke add.html atau detail.html.
 
 Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?
 Tidak ada
+
+POSTMAN
+
+XML :
+<img width="994" height="809" alt="Screenshot 2025-09-17 at 08 46 56" src="https://github.com/user-attachments/assets/084c2f90-cf5b-4466-b119-1b42265ecd0d" />
+
+JSON :
+<img width="1002" height="735" alt="Screenshot 2025-09-17 at 08 47 33" src="https://github.com/user-attachments/assets/98d00386-2b1a-4b5e-807f-8bc7348c621a" />
+
+
+
