@@ -129,5 +129,18 @@ XML :
 JSON :
 <img width="1002" height="735" alt="Screenshot 2025-09-17 at 08 47 33" src="https://github.com/user-attachments/assets/98d00386-2b1a-4b5e-807f-8bc7348c621a" />
 
+XML by id (1) :
+<img width="993" height="601" alt="Screenshot 2025-09-17 at 08 57 32" src="https://github.com/user-attachments/assets/a712fa21-c091-4cbe-86b3-b6da93935563" />
+
+XML by id (2) :
+<img width="997" height="644" alt="Screenshot 2025-09-17 at 08 57 49" src="https://github.com/user-attachments/assets/6b39e2de-0d89-40f5-a799-f83d170608cd" />
+
+JSON by id (1) :
+<img width="990" height="731" alt="Screenshot 2025-09-17 at 08 53 31" src="https://github.com/user-attachments/assets/52ab52c6-330e-44a0-aca2-80cc0177b28e" />
+
+JSON by id (2) :
+<img width="1000" height="700" alt="Screenshot 2025-09-17 at 08 54 03" src="https://github.com/user-attachments/assets/b5529848-a5d9-46f7-9d43-37c3681c7608" />
+
+
 
 
