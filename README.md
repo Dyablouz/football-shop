@@ -178,4 +178,6 @@ Django menangani resiko ini dengan sangat baik melalui beberapa lapisan keamanan
 
 Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 
+Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk memungkinkan user mengakses websitenya sesuai dengan status login/logoutnya. Saat menambahkan 3 fungsi baru tersebut, tampilan file .html juga sekaligus diupdate untuk tombol yang digunakan untuk register, login dan logout nya. Selain itu, update urls.py untuk menambahkan path urls yang baru. Fungsi show_main() dan add() juga dimodifikasi agar hanya bisa diakses setelah user login dengan akunnya. Kemudian, saya menambahkan cookie untuk user yang baru saja login dan dihapus jika user sudah logout.
 
+Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
