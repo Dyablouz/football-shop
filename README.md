@@ -172,4 +172,10 @@ Sebaliknya, kelebihan utama session adalah jauh lebih aman karena data sensitif 
 
 Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
 
+Tidak, penggunaan cookies tidak aman secara default. Karena disimpan sebagai teks biasa di browser klien, mereka sangat rawan terhadap pencurian. Resiko utamanya meliputi Cross-Site Scripting (XSS), di mana skrip jahat pada sebuah situs dapat mencuri cookie pengguna, dan Cross-Site Request Forgery (CSRF), di mana situs berbahaya menipu browser pengguna untuk mengirimkan request yang tidak diinginkan ke situs lain tempat pengguna sedang login, dengan cookie autentikasi yang terkirim secara otomatis.
+
+Django menangani resiko ini dengan sangat baik melalui beberapa lapisan keamanan bawaan. Untuk melawan CSRF, Django memiliki middleware yang mewajibkan adanya token rahasia dan unik ({% csrf_token %}) pada setiap request POST. Untuk keamanan data, framework session Django secara default menyimpan semua data sensitif di sisi server dan hanya mengirim cookie berisi ID acak ke klien. Cookie ini juga ditandatangani secara kriptografis untuk mencegah manipulasi dan secara default diatur sebagai HttpOnly, yang mencegahnya diakses oleh JavaScript dan secara signifikan mengurangi risiko pencurian via XSS.
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
 
