@@ -12,3 +12,8 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+# class employee(models.Model):
+#     nama = models.CharField(max_length=200)
+#     umur = models.IntegerField()
+#     persona = models.TextField()
