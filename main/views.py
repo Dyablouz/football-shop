@@ -41,6 +41,19 @@ def add(request):
     context = {'form': form}
     return render(request, "add.html", context)
 
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit.html", context)
+
 def detail(request, id):
     product = get_object_or_404(Product, pk=id)
 
@@ -49,6 +62,11 @@ def detail(request, id):
     }
 
     return render(request, "detail.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
 
 def show_json(request):
     product_list = Product.objects.all()
