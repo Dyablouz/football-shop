@@ -183,6 +183,7 @@ Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk m
 
 Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
 
+<<<<<<< HEAD
 
 # Tugas 5
 
@@ -206,3 +207,46 @@ Pertama-tama, dimulai dulu dengan membuat fungsi baru yaitu edit_product untuk m
 Kemudian saya menambahkan global.css untuk mendesain komponen form agar semua form memiliki tema yang sama. Setelah itu, saya membuat satu file html baru lagi yaitu navbar.html untuk navigation bar. Setelah itu, saya styling semua file html agar seragam dengan tema yang saya pilih yaitu hitam putih dicampur dengan warna merah. Untuk format masing masing file, saya mengikuti format dari tutorial 4 namun untuk detail.html, saya merubah beberapa hal agar semua informasi tentang product dapat langsung terlihat user ketika tombol “Description” ditekan.
 
 Dan untuk step terakhir, saya menambahkan sebuah gambar yang akan ditampilkan ketika product di website football-shop sedang tidak ada sama sekali.
+=======
+# Tugas 4
+
+Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
+
+Django AuthenticationForm adalah fitur bawaan yang sudah tersedia dalam Django yang dapat digunakan untuk membuat form proses user login yang memiliki dua field, username dan password. Fitur ini dikhususkan untuk memverifikasi username dan password bukan untuk menambahkan data akun baru. Ketika request terkirim, AuthenticationForm akan mengecek apakah akun dengan username tersebut ada, Jika ada, apakah passwordnya cocok, lalu cek apakah akun user aktif atau tidak.
+
+Kelebihan :
+
+Keamanan terjamin karena terdapat hashing password dan t erdapat pengecekan status keaktifan user.
+Cepat dan praktis, cukup mengimpor saja tanpa perlu membuat logika untuk memvalidasi password/username user.
+Kekurangan :
+
+Mengharuskan user untuk memiliki username dalam sebuah akun, harus mengimplementasi logika sendiri jika ingin menambahkan fitur login by google.
+UI yang generik sehingga mengharuskan kita untuk customize pesan error untuk menyesuaikan dengan platformnya.
+Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
+
+Autentikasi adalah proses verifikasi identitas dari user. Sementara itu, otorisasi adalah proses pengecekan hak akses user. Setelah identitas Anda terverifikasi, otorisasi akan menentukan izin apa saja yang Anda miliki.
+
+Lebih jelasnya, Autentikasi seperti ditanya “Siapa anda?” sedangkan otorisasi seperti ditanya “Anda boleh melakukan apa saja?”.
+
+Di Django, kedua konsep ini diimplementasikan melalui aplikasi django.contrib.auth. Autentikasi ditangani dengan memvalidasi username dan password pengguna terhadap model User dan mengelola sesi login. Sedangkan otorisasi diimplementasikan menggunakan permission framework bawaannya, yang memungkinkan pemberian izin spesifik kepada user atau grup.
+
+Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
+
+Cookies disimpan di browser, sementara session menyimpan data nya di server. Kelebihan utama cookies adalah tidak membebani server dan cocok untuk data non-sensitif seperti preferensi tema. Namun, kekurangannya adalah tidak aman karena data bisa dibaca dan dimanipulasi oleh pengguna, ukurannya sangat terbatas, dan selalu dikirim pada setiap request yang bisa memboroskan bandwidth.
+
+Sebaliknya, kelebihan utama session adalah jauh lebih aman karena data sensitif tersimpan di server dan klien hanya memegang ID unik. Kapasitas penyimpanannya juga jauh lebih besar. Kekurangannya, session membebani memori server karena harus menyimpan data untuk setiap pengguna aktif, yang dapat menjadi masalah pada website dengan traffic yang tinggi.
+
+Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
+
+Tidak, penggunaan cookies tidak aman secara default. Karena disimpan sebagai teks biasa di browser klien, mereka sangat rawan terhadap pencurian. Resiko utamanya meliputi Cross-Site Scripting (XSS), di mana skrip jahat pada sebuah situs dapat mencuri cookie pengguna, dan Cross-Site Request Forgery (CSRF), di mana situs berbahaya menipu browser pengguna untuk mengirimkan request yang tidak diinginkan ke situs lain tempat pengguna sedang login, dengan cookie autentikasi yang terkirim secara otomatis.
+
+Django menangani resiko ini dengan sangat baik melalui beberapa lapisan keamanan bawaan. Untuk melawan CSRF, Django memiliki middleware yang mewajibkan adanya token rahasia dan unik ({% csrf_token %}) pada setiap request POST. Untuk keamanan data, framework session Django secara default menyimpan semua data sensitif di sisi server dan hanya mengirim cookie berisi ID acak ke klien. Cookie ini juga ditandatangani secara kriptografis untuk mencegah manipulasi dan secara default diatur sebagai HttpOnly, yang mencegahnya diakses oleh JavaScript dan secara signifikan mengurangi risiko pencurian via XSS.
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+
+Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk memungkinkan user mengakses websitenya sesuai dengan status login/logoutnya. Saat menambahkan 3 fungsi baru tersebut, tampilan file .html juga sekaligus diupdate untuk tombol yang digunakan untuk register, login dan logout nya. Selain itu, update urls.py untuk menambahkan path urls yang baru. Fungsi show_main() dan add() juga dimodifikasi agar hanya bisa diakses setelah user login dengan akunnya. Kemudian, saya menambahkan cookie untuk user yang baru saja login dan dihapus jika user sudah logout.
+
+Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
+
+# Tugas 5
+>>>>>>> 5974b82 (Tugas 5)
