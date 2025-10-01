@@ -141,6 +141,7 @@ JSON by id (1) :
 JSON by id (2) :
 <img width="1000" height="700" alt="Screenshot 2025-09-17 at 08 54 03" src="https://github.com/user-attachments/assets/b5529848-a5d9-46f7-9d43-37c3681c7608" />
 
+# Tugas 4
 
 Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
 
@@ -181,3 +182,23 @@ Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-b
 Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk memungkinkan user mengakses websitenya sesuai dengan status login/logoutnya. Saat menambahkan 3 fungsi baru tersebut, tampilan file .html juga sekaligus diupdate untuk tombol yang digunakan untuk register, login dan logout nya. Selain itu, update urls.py untuk menambahkan path urls yang baru. Fungsi show_main() dan add() juga dimodifikasi agar hanya bisa diakses setelah user login dengan akunnya. Kemudian, saya menambahkan cookie untuk user yang baru saja login dan dihapus jika user sudah logout.
 
 Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
+
+
+# Tugas 5
+
+Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Jika terdapat beberapa CSS selector pada suatu elemen HTML, algoritma akan memeriksa prioritas atribut untuk menentukan yang mana yang akan dipakai. Prioritas pertama adalah yang memiliki Origin & Importance tertinggi, di mana style dari developer dengan !important memiliki kekuatan paling besar. Jika prioritas ini sama, maka browser akan menghitung Selector Specificity, di mana ID selector lebih kuat daripada class selector, dan class selector lebih kuat daripada element selector. Jika hal tersebut juga masih sama, maka aturan yang menang adalah yang didefinisikan terakhir atau paling bawah dalam kode CSS, yang dikenal sebagai Order of Appearance. Terakhir, jika tidak ada aturan yang cocok, elemen akan mewarisi style dari induknya atau menggunakan nilai default dari browser.
+
+Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+Responsive design sangat penting karena web dapat diakses dari berbagai macam ukuran layar dan kepadatan piksel. Tanpa design responsive, tampilan web akan pecah, sulit dibaca, dan pengguna akan merasa tidak nyaman menggunakannya. Contoh aplikasi yang sudah responsif adalah seperti shopee.com yang memiliki tampilan responsif tergantung dari device pengguna #########################################################################
+
+Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+Dalam CSS, margin, border, dan padding adalah properti yang mengatur ruang di sekitar sebuah elemen. Perbedaan utamanya terletak pada lokasinya, Margin adalah ruang transparan di luar elemen yang berfungsi untuk memberi jarak antar elemen. Border adalah garis yang mengelilingi elemen, tepat di antara margin dan padding. Sementara itu, Padding adalah ruang transparan di dalam elemen yang memberikan jarak antara konten (seperti teks atau gambar) dengan bordernya. Contoh penggunaannya : margin: 20px; border: 2px solid red; dan padding: 10px.
+
+Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+Flexbox adalah model layout satu dimensi dalam CSS. Flexbox memudahkan kita untuk meratakan elemen ke kiri/kanan/tengah, memberi jarak antar elemen yang rapi dan membuat item mengecil sesuai space tersisa. Karena fokusnya satu dimensi, flexbox cocok untuk komponen seperti navbar, kartu-kartu produk dalam satu baris, tombol-tombol, atau form yang perlu perataan dan distribusi ruang yang rapi.
+
+Grid Layout adalah model layout dua dimensi dalam CSS. Grid memudahkan kita menyusun elemen dalam baris dan kolom, mengatur ukuran/jarak tiap track, serta menempatkan item pada area tertentu (bisa melebar beberapa kolom atau baris). Karena fokusnya dua dimensi, grid cocok untuk kerangka halaman seperti header–sidebar–konten–footer, galeri gambar, atau dashboard yang butuh struktur rapi dan responsif pada dua arah.
+
+Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+
