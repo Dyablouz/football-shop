@@ -183,72 +183,8 @@ Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk m
 
 Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
 
-<<<<<<< HEAD
-
 # Tugas 5
 
-Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
-Jika terdapat beberapa CSS selector pada suatu elemen HTML, algoritma akan memeriksa prioritas atribut untuk menentukan yang mana yang akan dipakai. Prioritas pertama adalah yang memiliki Origin & Importance tertinggi, di mana style dari developer dengan !important memiliki kekuatan paling besar. Jika prioritas ini sama, maka browser akan menghitung Selector Specificity, di mana ID selector lebih kuat daripada class selector, dan class selector lebih kuat daripada element selector. Jika hal tersebut juga masih sama, maka aturan yang menang adalah yang didefinisikan terakhir atau paling bawah dalam kode CSS, yang dikenal sebagai Order of Appearance. Terakhir, jika tidak ada aturan yang cocok, elemen akan mewarisi style dari induknya atau menggunakan nilai default dari browser.
-
-Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
-Responsive design sangat penting karena web dapat diakses dari berbagai macam ukuran layar dan kepadatan piksel. Tanpa design responsive, tampilan web akan pecah, sulit dibaca, dan pengguna akan merasa tidak nyaman menggunakannya. Contoh aplikasi yang sudah responsif adalah seperti shopee.com yang memiliki tampilan responsif tergantung dari device pengguna. Untuk yang belum responsif, contoh nya bisa dilihat dari SIAKNG pada tampilan loginnya yang tidak menyesuaikan dengan layar dari device pengguna.
-
-Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
-Dalam CSS, margin, border, dan padding adalah properti yang mengatur ruang di sekitar sebuah elemen. Perbedaan utamanya terletak pada lokasinya, Margin adalah ruang transparan di luar elemen yang berfungsi untuk memberi jarak antar elemen. Border adalah garis yang mengelilingi elemen, tepat di antara margin dan padding. Sementara itu, Padding adalah ruang transparan di dalam elemen yang memberikan jarak antara konten (seperti teks atau gambar) dengan bordernya. Contoh penggunaannya : margin: 20px; border: 2px solid red; dan padding: 10px.
-
-Jelaskan konsep flex box dan grid layout beserta kegunaannya!
-Flexbox adalah model layout satu dimensi dalam CSS. Flexbox memudahkan kita untuk meratakan elemen ke kiri/kanan/tengah, memberi jarak antar elemen yang rapi dan membuat item mengecil sesuai space tersisa. Karena fokusnya satu dimensi, flexbox cocok untuk komponen seperti navbar, kartu-kartu produk dalam satu baris, tombol-tombol, atau form yang perlu perataan dan distribusi ruang yang rapi.
-
-Grid Layout adalah model layout dua dimensi dalam CSS. Grid memudahkan kita menyusun elemen dalam baris dan kolom, mengatur ukuran/jarak tiap track, serta menempatkan item pada area tertentu (bisa melebar beberapa kolom atau baris). Karena fokusnya dua dimensi, grid cocok untuk kerangka halaman seperti header–sidebar–konten–footer, galeri gambar, atau dashboard yang butuh struktur rapi dan responsif pada dua arah.
-
-Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
-Pertama-tama, dimulai dulu dengan membuat fungsi baru yaitu edit_product untuk mengubah isi/data dari product yang telah ditambahkan dan dibuat file .html nya untuk halaman user mengupdate data. Selain itu, juga membuat fungsi delete_product dan membuat kedua fitur tersebut dapat diakses di halaman home dan memastikan hanya product yang dimiliki oleh user yang sedang login sekarang yang dapat diedit/hapus. 
-
-Kemudian saya menambahkan global.css untuk mendesain komponen form agar semua form memiliki tema yang sama. Setelah itu, saya membuat satu file html baru lagi yaitu navbar.html untuk navigation bar. Setelah itu, saya styling semua file html agar seragam dengan tema yang saya pilih yaitu hitam putih dicampur dengan warna merah. Untuk format masing masing file, saya mengikuti format dari tutorial 4 namun untuk detail.html, saya merubah beberapa hal agar semua informasi tentang product dapat langsung terlihat user ketika tombol “Description” ditekan.
-
-Dan untuk step terakhir, saya menambahkan sebuah gambar yang akan ditampilkan ketika product di website football-shop sedang tidak ada sama sekali.
-=======
-# Tugas 4
-
-Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.
-
-Django AuthenticationForm adalah fitur bawaan yang sudah tersedia dalam Django yang dapat digunakan untuk membuat form proses user login yang memiliki dua field, username dan password. Fitur ini dikhususkan untuk memverifikasi username dan password bukan untuk menambahkan data akun baru. Ketika request terkirim, AuthenticationForm akan mengecek apakah akun dengan username tersebut ada, Jika ada, apakah passwordnya cocok, lalu cek apakah akun user aktif atau tidak.
-
-Kelebihan :
-
-Keamanan terjamin karena terdapat hashing password dan t erdapat pengecekan status keaktifan user.
-Cepat dan praktis, cukup mengimpor saja tanpa perlu membuat logika untuk memvalidasi password/username user.
-Kekurangan :
-
-Mengharuskan user untuk memiliki username dalam sebuah akun, harus mengimplementasi logika sendiri jika ingin menambahkan fitur login by google.
-UI yang generik sehingga mengharuskan kita untuk customize pesan error untuk menyesuaikan dengan platformnya.
-Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?
-
-Autentikasi adalah proses verifikasi identitas dari user. Sementara itu, otorisasi adalah proses pengecekan hak akses user. Setelah identitas Anda terverifikasi, otorisasi akan menentukan izin apa saja yang Anda miliki.
-
-Lebih jelasnya, Autentikasi seperti ditanya “Siapa anda?” sedangkan otorisasi seperti ditanya “Anda boleh melakukan apa saja?”.
-
-Di Django, kedua konsep ini diimplementasikan melalui aplikasi django.contrib.auth. Autentikasi ditangani dengan memvalidasi username dan password pengguna terhadap model User dan mengelola sesi login. Sedangkan otorisasi diimplementasikan menggunakan permission framework bawaannya, yang memungkinkan pemberian izin spesifik kepada user atau grup.
-
-Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?
-
-Cookies disimpan di browser, sementara session menyimpan data nya di server. Kelebihan utama cookies adalah tidak membebani server dan cocok untuk data non-sensitif seperti preferensi tema. Namun, kekurangannya adalah tidak aman karena data bisa dibaca dan dimanipulasi oleh pengguna, ukurannya sangat terbatas, dan selalu dikirim pada setiap request yang bisa memboroskan bandwidth.
-
-Sebaliknya, kelebihan utama session adalah jauh lebih aman karena data sensitif tersimpan di server dan klien hanya memegang ID unik. Kapasitas penyimpanannya juga jauh lebih besar. Kekurangannya, session membebani memori server karena harus menyimpan data untuk setiap pengguna aktif, yang dapat menjadi masalah pada website dengan traffic yang tinggi.
-
-Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?
-
-Tidak, penggunaan cookies tidak aman secara default. Karena disimpan sebagai teks biasa di browser klien, mereka sangat rawan terhadap pencurian. Resiko utamanya meliputi Cross-Site Scripting (XSS), di mana skrip jahat pada sebuah situs dapat mencuri cookie pengguna, dan Cross-Site Request Forgery (CSRF), di mana situs berbahaya menipu browser pengguna untuk mengirimkan request yang tidak diinginkan ke situs lain tempat pengguna sedang login, dengan cookie autentikasi yang terkirim secara otomatis.
-
-Django menangani resiko ini dengan sangat baik melalui beberapa lapisan keamanan bawaan. Untuk melawan CSRF, Django memiliki middleware yang mewajibkan adanya token rahasia dan unik ({% csrf_token %}) pada setiap request POST. Untuk keamanan data, framework session Django secara default menyimpan semua data sensitif di sisi server dan hanya mengirim cookie berisi ID acak ke klien. Cookie ini juga ditandatangani secara kriptografis untuk mencegah manipulasi dan secara default diatur sebagai HttpOnly, yang mencegahnya diakses oleh JavaScript dan secara signifikan mengurangi risiko pencurian via XSS.
-
-Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-
-Pertama-tama, saya buat fungsi register, login, logout di dalam views.py untuk memungkinkan user mengakses websitenya sesuai dengan status login/logoutnya. Saat menambahkan 3 fungsi baru tersebut, tampilan file .html juga sekaligus diupdate untuk tombol yang digunakan untuk register, login dan logout nya. Selain itu, update urls.py untuk menambahkan path urls yang baru. Fungsi show_main() dan add() juga dimodifikasi agar hanya bisa diakses setelah user login dengan akunnya. Kemudian, saya menambahkan cookie untuk user yang baru saja login dan dihapus jika user sudah logout.
-
-Setelah itu, saya menghubungkan model Product dengan User dengan 'from django.contrib.auth.models import User' lalu menambahkan 'user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)' pada class Product.
-
-# Tugas 5
 Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
 Jika terdapat beberapa CSS selector pada suatu elemen HTML, algoritma akan memeriksa prioritas atribut untuk menentukan yang mana yang akan dipakai. Prioritas pertama adalah yang memiliki Origin & Importance tertinggi, di mana style dari developer dengan !important memiliki kekuatan paling besar. Jika prioritas ini sama, maka browser akan menghitung Selector Specificity, di mana ID selector lebih kuat daripada class selector, dan class selector lebih kuat daripada element selector. Jika hal tersebut juga masih sama, maka aturan yang menang adalah yang didefinisikan terakhir atau paling bawah dalam kode CSS, yang dikenal sebagai Order of Appearance. Terakhir, jika tidak ada aturan yang cocok, elemen akan mewarisi style dari induknya atau menggunakan nilai default dari browser.
 
