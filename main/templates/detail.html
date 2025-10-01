@@ -1,26 +1,66 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>{{ product.title }} - Football Shop</title>
+{% endblock meta %}
+
 {% block content %}
-<p><a href="{% url 'main:show_main' %}"><button>← Back to Product List</button></a></p>
+<div class="bg-[#0b0b0d] w-full min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-<h1>{{ product.name }}</h1>
+    <!-- Back -->
+    <div class="mb-6">
+      <a href="{% url 'main:show_main' %}" class="text-[#a1a6b3] hover:text-[#f2f5f7] font-medium transition-colors">
+        ← Back to Home
+      </a>
+    </div>
 
-<h2>{{ product.category }}</h2>
+    <!-- Two-column layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-<p>{% if product.is_featured %}<b>Featured</b>{% endif %}</p>
+      <!-- Left: single image -->
+      <div class="lg:col-span-6">
+        <div class="bg-[#111318] border border-[#24262d] rounded-lg p-3">
+          {% if product.thumbnail %}
+            <img src="{{ product.thumbnail }}" alt="{{ product.title }}"
+                 class="w-full h-[460px] sm:h-[520px] object-cover rounded-md" />
+          {% else %}
+            <div class="w-full h-[460px] sm:h-[520px] bg-[#24262d] rounded-md"></div>
+          {% endif %}
+        </div>
+      </div>
 
-{% if product.thumbnail %}
-<img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300">
-<br /><br />
-{% endif %}
+      <!-- Right: details -->
+      <aside class="lg:col-span-6">
+        <div class="bg-[#111318] border border-[#24262d] rounded-lg p-6 sm:p-8">
 
-<p>Price : {{ product.price }}</p>
+          <!-- Nama -->
+          <h1 class="text-3xl sm:text-4xl font-bold text-[#f2f5f7] leading-tight">
+            {{ product.name }}
+          </h1>
 
-<p>{{ product.description }}</p>
+          <!-- Harga -->
+          <div class="mt-4 text-2xl font-extrabold text-[#f2f5f7]">
+            Rp {{ product.price }}
+            {# Jika ingin format 1.234.567: aktifkan humanize lalu gunakan {{ product.price|intcomma }} #}
+          </div>
 
-{% if product.user %}
-    <p>Seller: {{ product.user.username }}</p>
-{% else %}
-    <p>Seller: Anonymous</p>
-{% endif %}
+          <!-- Kategori -->
+          <div class="mt-3">
+            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#e11d2a] text-white">
+              {{ product.category }}
+            </span>
+          </div>
 
+          <!-- Deskripsi -->
+          <div class="mt-6 text-[#a1a6b3] leading-relaxed whitespace-pre-line">
+            {{ product.description }}
+          </div>
+
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
 {% endblock content %}
