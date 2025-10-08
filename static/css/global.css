@@ -3,6 +3,9 @@
     padding: 0.5rem;
     border: 2px solid #24262d;
     border-radius: 0.375rem;
+    background: #0f1116;
+    color: #e5e7eb; 
+    box-sizing: border-box;
 }
 
 .form-style form input:focus, form textarea:focus, form select:focus {

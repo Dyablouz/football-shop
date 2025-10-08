@@ -1,0 +1,23 @@
+<div id="confirmModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-black/60">
+  <div class="bg-[#111318] text-[#e5e7eb] rounded-xl w-[92%] max-w-md p-6 border border-[#24262d]">
+    <h3 class="text-lg font-semibold mb-2">Delete product?</h3>
+    <p class="text-[#a1a6b3] mb-4">Aksi ini tidak bisa diurungkan.</p>
+    <div class="flex gap-3">
+      <button class="px-4 py-2 border border-[#24262d] rounded" onclick="hideConfirm()">Cancel</button>
+      <button id="confirmDeleteBtn" class="flex-1 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white">Delete</button>
+    </div>
+  </div>
+</div>
+<script>
+var __deleteId = null;
+
+function showConfirm(id){
+  window.__deleteId = id;
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+function hideConfirm(){
+  window.__deleteId = null;
+  document.getElementById('confirmModal').classList.add('hidden');
+}
+</script>
+

@@ -20,25 +20,93 @@
         <h1 class="text-2xl font-bold text-[#f2f5f7] mb-2">Add New Product</h1>
       </div>
       
-      <form method="POST" class="space-y-6">
+      <form method="POST" class="space-y-6" novalidate>
         {% csrf_token %}
-        {% for field in form %}
-          <div>
-            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
-              {{ field.label }}
-            </label>
-            <div class="w-full">
-              {{ field }}
-            </div>
-            {% if field.help_text %}
-              <p class="mt-1 text-sm text-[#a1a6b3]">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="mt-1 text-sm text-red-300">{{ error }}</p>
-            {% endfor %}
+
+        <!-- Name -->
+        <div>
+          <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Name
+          </label>
+          <div class="w-full">
+            {{ form.name }}
           </div>
-        {% endfor %}
-        
+          {% if form.name.help_text %}<p class="mt-1 text-sm text-[#a1a6b3]">{{ form.name.help_text }}</p>{% endif %}
+          {% for error in form.name.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label for="{{ form.price.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Price
+          </label>
+          <div class="w-full">
+            {{ form.price }}
+          </div>
+          {% for error in form.price.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+        </div>
+
+        <!-- Stock -->
+        <div>
+          <label for="{% if form.stock %}{{ form.stock.id_for_label }}{% else %}id_stock{% endif %}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Stock
+          </label>
+          <div class="w-full">
+            {% if form.stock %}
+              {{ form.stock }}
+            {% else %}
+              <input type="number" name="stock" id="id_stock" min="0" value="0"
+                     class="w-full rounded-md border border-[#24262d] bg-[#0f1116] text-[#e5e7eb] px-3 py-2" />
+            {% endif %}
+          </div>
+          {% if form.stock %}
+            {% for error in form.stock.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+          {% endif %}
+        </div>
+
+        <!-- Thumbnail -->
+        <div>
+          <label for="{{ form.thumbnail.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Thumbnail URL
+          </label>
+          <div class="w-full">
+            {{ form.thumbnail }}
+          </div>
+          {% for error in form.thumbnail.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Category
+          </label>
+          <div class="w-full">
+            {{ form.category }}
+          </div>
+          {% for error in form.category.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-[#e5e7eb] mb-2">
+            Description
+          </label>
+          <div class="w-full">
+            {{ form.description }}
+          </div>
+          {% for error in form.description.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+        </div>
+
+        <!-- Featured -->
+        <div class="flex items-center gap-2 pt-2">
+          {{ form.is_featured }}
+          <label for="{{ form.is_featured.id_for_label }}" class="text-sm font-medium text-[#e5e7eb]">
+            Featured Product
+          </label>
+        </div>
+        {% for error in form.is_featured.errors %}<p class="mt-1 text-sm text-red-300">{{ error }}</p>{% endfor %}
+
+        <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-[#24262d]">
           <a href="{% url 'main:show_main' %}" class="order-2 sm:order-1 px-6 py-3 border border-[#24262d] text-[#e5e7eb] rounded-md font-medium hover:bg-white/5 transition-colors text-center">
             Cancel

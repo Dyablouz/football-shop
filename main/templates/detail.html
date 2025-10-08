@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ product.title }} - Football Shop</title>
+<title>Product Detail - Football Shop</title>
 {% endblock meta %}
 
 {% block content %}
@@ -16,50 +16,245 @@
       </a>
     </div>
 
-    <!-- Two-column layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Loading -->
+    <div id="loading-state" class="bg-[#111318] border border-[#24262d] rounded-lg p-12 text-center">
+      <div class="animate-spin inline-block w-8 h-8 border-4 border-white/30 border-t-white rounded-full"></div>
+      <p class="text-[#a1a6b3] mt-3">Loading product...</p>
+    </div>
 
-      <!-- Left: single image -->
+    <!-- Error -->
+    <div id="error-state" class="hidden bg-red-50 text-red-700 border border-red-200 rounded-lg p-6 text-center">
+      <h3 class="text-lg font-semibold mb-1">Failed to load product</h3>
+      <p class="text-red-700/80">Please try again later.</p>
+    </div>
+
+    <!-- Content -->
+    <div id="content-wrap" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- image -->
       <div class="lg:col-span-6">
         <div class="bg-[#111318] border border-[#24262d] rounded-lg p-3">
-          {% if product.thumbnail %}
-            <img src="{{ product.thumbnail }}" alt="{{ product.title }}"
-                 class="w-full h-[460px] sm:h-[520px] object-cover rounded-md" />
-          {% else %}
-            <div class="w-full h-[460px] sm:h-[520px] bg-[#24262d] rounded-md"></div>
-          {% endif %}
+          <div id="thumb-wrap" class="w-full h-[460px] sm:h-[520px] rounded-md overflow-hidden bg-[#24262d]"></div>
         </div>
       </div>
 
-      <!-- Right: details -->
+      <!-- details -->
       <aside class="lg:col-span-6">
         <div class="bg-[#111318] border border-[#24262d] rounded-lg p-6 sm:p-8">
 
-          <!-- Nama -->
-          <h1 class="text-3xl sm:text-4xl font-bold text-[#f2f5f7] leading-tight">
-            {{ product.name }}
-          </h1>
+          <!-- Name -->
+          <h1 id="prod-name" class="text-3xl sm:text-4xl font-bold text-[#f2f5f7] leading-tight"></h1>
 
-          <!-- Harga -->
-          <div class="mt-4 text-2xl font-extrabold text-[#f2f5f7]">
-            Rp {{ product.price }}
+          <!-- Price -->
+          <div id="prod-price" class="mt-4 text-2xl font-extrabold text-[#f2f5f7]"></div>
+
+          <!-- Category / Featured -->
+          <div class="mt-3 flex items-center gap-2">
+            <span id="cat-badge" class="hidden inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#e11d2a] text-white"></span>
+            <span id="feat-badge" class="hidden inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Featured</span>
           </div>
 
-          <!-- Kategori -->
-          <div class="mt-3">
-            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#e11d2a] text-white">
-              {{ product.category }}
-            </span>
-          </div>
+          <!-- Stock -->
+          <div id="prod-stock" class="mt-3 text-sm text-[#a1a6b3]"></div>
 
-          <!-- Deskripsi -->
-          <div class="mt-6 text-[#a1a6b3] leading-relaxed whitespace-pre-line">
-            {{ product.description }}
+          <!-- Description -->
+          <div id="prod-desc" class="mt-6 text-[#a1a6b3] leading-relaxed whitespace-pre-line"></div>
+
+          {% if user.is_authenticated %}
+          <div class="mt-8 pt-6 border-t border-[#24262d] flex flex-wrap gap-3">
+            <button id="btn-edit" class="px-4 py-2 rounded border border-[#24262d] hover:bg-white/5 text-[#e5e7eb]">Edit</button>
+            <button id="btn-delete" class="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white">Delete</button>
           </div>
+          {% endif %}
 
         </div>
       </aside>
     </div>
   </div>
 </div>
+
+<script>
+/* ---------- Config ---------- */
+const PRODUCT_ID = "{{ product.id|default_if_none:'' }}" || "{{ product_id|default_if_none:'' }}";
+const DETAIL_JSON = `{% url 'main:show_json_by_id' 0 %}`.replace('0', PRODUCT_ID);
+const UPDATE_URL  = (id) => `{% url 'main:update_product_ajax' 0 %}`.replace('0', id);
+const DELETE_URL  = (id) => `{% url 'main:delete_product_ajax' 0 %}`.replace('0', id);
+const CSRF = (document.cookie.match(/csrftoken=([^;]+)/)||[])[1];
+
+/* ---------- DOM ---------- */
+const loadingEl = document.getElementById('loading-state');
+const errorEl   = document.getElementById('error-state');
+const contentEl = document.getElementById('content-wrap');
+const thumbWrap = document.getElementById('thumb-wrap');
+const nameEl    = document.getElementById('prod-name');
+const priceEl   = document.getElementById('prod-price');
+const stockEl   = document.getElementById('prod-stock');
+const descEl    = document.getElementById('prod-desc');
+const catBadge  = document.getElementById('cat-badge');
+const featBadge = document.getElementById('feat-badge');
+const btnEdit   = document.getElementById('btn-edit');
+const btnDelete = document.getElementById('btn-delete');
+
+/* ---------- State ---------- */
+let currentProduct = null;
+
+/* ---------- Helpers ---------- */
+function showState(state){
+  loadingEl.classList.toggle('hidden', state !== 'loading');
+  errorEl.classList.toggle('hidden', state !== 'error');
+  contentEl.classList.toggle('hidden', state !== 'ready');
+}
+function rupiah(x){
+  if (x === null || x === undefined || x === '') return '';
+  const n = Number(x);
+  if (Number.isNaN(n)) return String(x);
+  return 'Rp ' + n.toLocaleString('id-ID');
+}
+
+/* ---------- Render ---------- */
+function renderProduct(p){
+  currentProduct = p;
+
+  const name  = DOMPurify.sanitize(p.name ?? '');
+  const desc  = DOMPurify.sanitize(p.description ?? '');
+  const cat   = DOMPurify.sanitize(p.category ?? '');
+  const thumb = p.thumbnail ? DOMPurify.sanitize(p.thumbnail) : '';
+  const price = p.price ?? '';
+  const stock = p.stock ?? '';
+
+  // Title
+  nameEl.textContent = name;
+  if (name) document.title = `${name} - Football Shop`;
+
+  // Price / Stock
+  priceEl.textContent = price !== '' ? rupiah(price) : '';
+  stockEl.textContent = stock !== '' ? `Stock: ${stock}` : '';
+
+  // Description
+  descEl.textContent = desc;
+
+  // Badges
+  if (cat){
+    catBadge.textContent = cat;
+    catBadge.classList.remove('hidden');
+  } else {
+    catBadge.classList.add('hidden');
+  }
+  featBadge.classList.toggle('hidden', !p.is_featured);
+
+  // Thumbnail
+  thumbWrap.innerHTML = thumb
+    ? `<img src="${thumb}" alt="${name}" class="w-full h-full object-cover rounded-md">`
+    : `<div class="w-full h-full bg-[#24262d] rounded-md"></div>`;
+
+  // Actions
+  if (btnEdit){
+    btnEdit.onclick = () => {
+      // Buka modal edit + prefill semua field (termasuk is_featured)
+      if (typeof showProductModal === 'function') {
+        showProductModal('update', p);
+        // harden: kalau modal belum set checkbox via fungsi internal, set manual juga
+        const f = document.getElementById('productForm');
+        const feat = f?.querySelector('#is_featured');
+        if (feat) feat.checked = !!p.is_featured;
+      }
+      // Pastikan submit di halaman detail refresh ulang data
+      hookDetailModalSubmit();
+    };
+  }
+  if (btnDelete){
+    btnDelete.onclick = () => {
+      if (typeof showConfirm === 'function') showConfirm(p.id);
+    };
+  }
+}
+
+/* ---------- Fetch ---------- */
+async function loadProduct(){
+  try{
+    showState('loading');
+    if (!PRODUCT_ID){ throw new Error('Missing product id'); }
+    const r = await fetch(DETAIL_JSON, { headers:{'Accept':'application/json'} });
+    if(!r.ok) throw new Error('Failed to fetch detail');
+    const data = await r.json();
+    renderProduct(data);
+    showState('ready');
+  }catch(e){
+    console.error(e);
+    showState('error');
+  }
+}
+
+/* ---------- Hook submit modal (khusus di halaman detail) ---------- */
+function hookDetailModalSubmit(){
+  const productForm = document.getElementById('productForm');
+  if (!productForm) return;
+
+  // Cegah multi-binding saat modal dibuka berkali-kali
+  if (productForm.dataset.boundForDetail === '1') return;
+  productForm.dataset.boundForDetail = '1';
+
+  productForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    // Ambil id yang sedang diedit
+    const idEl = document.getElementById('productId');
+    const id   = (idEl && idEl.value) ? idEl.value : (currentProduct ? currentProduct.id : null);
+    if (!id){
+      console.error('Missing product id for update');
+      if (typeof showToast === 'function') showToast('Failed', 'ID produk tidak ditemukan', 'error');
+      return;
+    }
+
+    // FormData akan menyertakan checkbox is_featured + hidden fallback (0) → backend aman
+    const fd = new FormData(productForm);
+
+    const r = await fetch(UPDATE_URL(id), {
+      method:'POST',
+      body: fd,
+      headers:{ 'X-CSRFToken': CSRF }
+    });
+
+    if(!r.ok){
+      console.error('Update failed', r.status, await r.text());
+      if (typeof showToast === 'function') showToast('Failed', 'Gagal memperbarui produk', 'error');
+      return;
+    }
+
+    if (typeof hideProductModal === 'function') hideProductModal();
+    if (typeof showToast === 'function') showToast('Updated', 'Produk berhasil diupdate', 'success');
+
+    // Refresh detail agar badge Featured & data lain ikut terbarui
+    loadProduct();
+  });
+}
+
+/* ---------- Konfirmasi delete ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const confirmBtn = document.getElementById('confirmDeleteBtn');
+  if (confirmBtn){
+    confirmBtn.addEventListener('click', async ()=>{
+      if (typeof window.__deleteId === 'undefined' || window.__deleteId == null) return;
+
+      const r = await fetch(DELETE_URL(window.__deleteId), {
+        method:'POST',
+        headers:{'X-CSRFToken': CSRF}
+      });
+
+      if (typeof hideConfirm === 'function') hideConfirm();
+
+      if(!r.ok){
+        console.error('Delete failed', r.status, await r.text());
+        if (typeof showToast === 'function') showToast('Failed', 'Gagal menghapus', 'error');
+        return;
+      }
+
+      if (typeof showToast === 'function') showToast('Deleted', 'Produk dihapus', 'success');
+      window.location.href = "{% url 'main:show_main' %}";
+    });
+  }
+
+  // Muat data awal
+  loadProduct();
+});
+</script>
 {% endblock content %}

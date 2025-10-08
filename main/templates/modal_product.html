@@ -1,0 +1,108 @@
+<div id="productModal" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-black/60">
+  <div id="productModalCard" class="bg-[#111318] rounded-xl w-[92%] max-w-xl p-6 border border-[#24262d] opacity-0 scale-95 transition">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 id="productModalTitle" class="text-2xl font-bold text-[#f2f5f7]">Add New Product</h3>
+      </div>
+      <button type="button" onclick="hideProductModal()" class="px-2 py-1 rounded hover:bg-white/10">✕</button>
+    </div>
+
+    <!-- Form -->
+    <form id="productForm" class="form-style space-y-6" novalidate>
+      <input type="hidden" id="productId" name="id"/>
+
+      <!-- Name -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-[#e5e7eb] mb-2">Name</label>
+        <input id="name" name="name" class="w-full" required />
+      </div>
+
+      <!-- Price -->
+      <div>
+        <label for="price" class="block text-sm font-medium text-[#e5e7eb] mb-2">Price</label>
+        <input id="price" name="price" type="number" min="0" step="1" class="w-full" />
+      </div>
+
+      <!-- Stock -->
+      <div>
+        <label for="stock" class="block text-sm font-medium text-[#e5e7eb] mb-2">Stock</label>
+        <input id="stock" name="stock" type="number" min="0" step="1" class="w-full" value="0" />
+      </div>
+
+      <!-- Thumbnail URL -->
+      <div>
+        <label for="thumbnail" class="block text-sm font-medium text-[#e5e7eb] mb-2">Thumbnail URL</label>
+        <input id="thumbnail" name="thumbnail" type="url" class="w-full" />
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label for="category" class="block text-sm font-medium text-[#e5e7eb] mb-2">Category</label>
+        <input id="category" name="category" class="w-full" />
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-[#e5e7eb] mb-2">Description</label>
+        <textarea id="description" name="description" rows="6" class="w-full"></textarea>
+      </div>
+
+        <!-- Featured -->
+        <div class="flex items-center gap-3"> 
+            <input type="hidden" name="is_featured" value="0">
+            <input id="is_featured" name="is_featured" type="checkbox" value="1" class="w-5 h-5">
+            <label for="is_featured" class="text-sm font-medium text-[#e5e7eb] select-none">
+                Featured Product
+            </label>
+        </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-[#24262d]">
+        <button type="button" class="order-2 sm:order-1 px-6 py-3 border border-[#24262d] text-[#e5e7eb] rounded-md font-medium hover:bg-white/5 transition-colors text-center" onclick="hideProductModal()">Cancel</button>
+        <button id="submitProductBtn" type="submit" class="order-1 sm:order-2 flex-1 bg-[#e11d2a] text-white px-6 py-3 rounded-md font-medium hover:bg-[#b91c1c] transition-colors">
+          Publish New Product!
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showProductModal(mode = 'create', data = null) {
+  const titleEl  = document.getElementById('productModalTitle');
+  const submitEl = document.getElementById('submitProductBtn');
+  const form     = document.getElementById('productForm');
+  const cekFeat  = document.getElementById('is_featured');
+
+  // Judul & tombol sesuai mode
+  titleEl.textContent  = (mode === 'create') ? 'Add New Product' : 'Edit Product';
+  submitEl.textContent = (mode === 'create') ? 'Publish New Product!' : 'Update Product';
+
+  form.reset();
+  document.getElementById('productId').value = data?.id ?? '';
+  form.name.value        = data?.name        ?? '';
+  form.price.value       = (data?.price ?? '') === '' ? '' : Number(data.price);
+  form.stock.value       = (data?.stock ?? '') === '' ? '' : Number(data.stock);
+  form.thumbnail.value   = data?.thumbnail   ?? '';
+  form.category.value    = data?.category    ?? '';
+  form.description.value = data?.description ?? '';
+  cekFeat.checked        = !!(data?.is_featured);
+
+  const m = document.getElementById('productModal');
+  const c = document.getElementById('productModalCard');
+  m.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    c.classList.remove('opacity-0','scale-95');
+    c.classList.add('opacity-100','scale-100');
+  });
+}
+
+function hideProductModal() {
+  const m = document.getElementById('productModal');
+  const c = document.getElementById('productModalCard');
+  c.classList.remove('opacity-100','scale-100');
+  c.classList.add('opacity-0','scale-95');
+  setTimeout(() => m.classList.add('hidden'), 160);
+}
+</script>
