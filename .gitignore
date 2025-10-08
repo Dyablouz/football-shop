@@ -115,3 +115,6 @@ GitHub.sublime-settings
 .history__pycache__/
 *.py[cod]
 .DS_Store
+__pycache__/
+*.py[cod]
+.DS_Store
